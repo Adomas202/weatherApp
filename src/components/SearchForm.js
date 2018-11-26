@@ -3,9 +3,8 @@ import axios from 'axios';
 
 class searchForm extends Component {
     getWeather() {
-        let url = "http://api.openweathermap.org/data/2.5/weather?q=London&?units=metric&APPID={1d374b49fd74fc42b9e56daff44ae8fc}";
         axios
-            .get(url)
+            .get(`https://api.openweathermap.org/data/2.5/find?q=Vilnius&units=imperial&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 console.log(response.data);
             })
@@ -19,7 +18,7 @@ class searchForm extends Component {
             <form>
                 <input type="text" name="city" placeholder="City"/>
                 <input type="text" name="country" placeholder="Country"/>
-                <button onClick={this.getWeather}>Show weather</button>
+                <button onClick={this.getWeather()}>Show weather</button>
             </form>
         )
     }

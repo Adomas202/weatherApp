@@ -8,3 +8,29 @@
   padding-left: 1em;
   padding-right:1em;
 }
+
+.location {
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 1.8em;
+  color:#5b5b5b;
+}
+
+.menu {
+  float: right;
+  font-family: Roboto;
+  font-size:.5em;
+  color:#5b5b5b;
+  margin-top:-.09em;
+  margin-right:-2em;
+  list-style:square;
+}
+
+.temp {
+  float:right;
+  font-family:Roboto;
+  font-weight: 300;
+  font-size: 8.5em;
+  margin-top:-.75em;
+  color:#5b5b5b;
+}

@@ -2,9 +2,16 @@ import React from 'react';
 import './styles.scss';
 
 const Card = () => {
-    return(
+    return (
         <div className="card">
-            Weather
+            <span className="location">Vilnius, Lithuania</span>
+            <ul className="menu">
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+            {/*<br>*/}
+            <span className="temp">76&#176;</span>
         </div>
     )
 };
