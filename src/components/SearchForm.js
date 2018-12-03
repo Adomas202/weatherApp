@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, {Component} from 'react';
 
 class searchForm extends Component {
-    getWeather() {
-        axios
-            .get(`https://api.openweathermap.org/data/2.5/find?q=Vilnius&units=imperial&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                console.log(error);
-            })
+    constructor() {
+        super();
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {
+            input: "",
+        };
     }
 
+    handleSubmit = event => {
+        event.preventDefault();
+        this.props.handleFromParent(this.state.input);
+    };
+
+    handleChange = input => {
+        this.setState({input: input.target.value})
+    };
+
     render() {
-        return(
-            <form>
-                <input type="text" name="city" placeholder="City"/>
-                <input type="text" name="country" placeholder="Country"/>
-                <button onClick={this.getWeather()}>Show weather</button>
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <input type='text' placeholder='Enter City Name...' onKeyDown={this.handleChange}/>
             </form>
         )
     }
