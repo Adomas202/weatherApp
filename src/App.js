@@ -18,7 +18,7 @@ class App extends Component {
     }
 
     getWeather = city => {
-        axios.get(`https://api.openweathermap.org/data/2.5/find?q=${city}&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
+        axios.get(`https://api.openweathermap.org/data/2.5/find?q=${city},LV&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 this.setState({
                     temp: response.data.list[0].main.temp,
