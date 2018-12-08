@@ -41,14 +41,15 @@ class searchForm extends Component {
     handleSelect = address => {
         const isValid = this.handleValidation();
         console.log(isValid);
-        if (isValid) {
-            this.setState({inputError: ""});
-            this.props.handleFromParent(this.state.input);
-        }
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
             .then(latLng => {
-                console.log('Success', latLng)
+                console.log('Success', latLng);
+                this.setState({coordinates: latLng});
+                if (isValid) {
+                    this.setState({inputError: ""});
+                    this.props.handleFromParent(latLng);
+                }
             })
             .catch(error => console.error('Error', error));
     };

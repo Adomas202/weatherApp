@@ -10,28 +10,30 @@ class App extends Component {
         super();
         this.handleData = this.handleData.bind(this);
         this.state = {
-            weather: [],
-            temp: [],
+            weather: {},
+            temp: "",
             clouds: [],
             input: "",
         };
     }
 
-    getWeather = city => {
-        axios.get(`https://api.openweathermap.org/data/2.5/find?q=${city},LV&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
+    getWeather = (lat, lng) => {
+        console.log(lat, lng);
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 this.setState({
-                    temp: response.data.list[0].main.temp,
+                    temp: response.data.list[0].temp.day,
+                    weather: response.data,
                 });
-                console.log(response.data);
+                console.log(response.data.list);
             })
             .catch(error => {
                 console.log('error', error);
             });
     };
 
-    queryWeather = (cityName) => {
-        this.getWeather(cityName);
+    queryWeather = (coordinates) => {
+        this.getWeather(coordinates.lat, coordinates.lng);
     };
 
     handleData = data => {
@@ -40,13 +42,31 @@ class App extends Component {
     };
 
     render() {
+        if (this.state.temp === "") {
+            return (
+                <div>
+                    <Title/>
+                    <SearchForm handleFromParent={this.handleData}/>
+                </div>
+            )
+        }
+
         return (
             <div>
                 <Title/>
                 <div className='content'>
                     <SearchForm handleFromParent={this.handleData}/>
                 </div>
-                {this.state.temp}
+                {this.state.weather.list.map(day => {
+                    return(<div>{day.temp.day}</div>)
+                })}
+                {/*{this.state.weather.list.map(day => {*/}
+                {/*return(*/}
+                {/*<div>*/}
+                {/*{day.temp.day}*/}
+                {/*</div>*/}
+                {/*)*/}
+                {/*})}*/}
             </div>
         );
     }
