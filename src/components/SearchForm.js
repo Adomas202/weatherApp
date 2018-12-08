@@ -7,12 +7,34 @@ class searchForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.state = {
             input: "",
+            inputError: "",
         };
     }
 
+    handleValidation = () => {
+        let inputError = "";
+
+        if (this.state.input.length === 0) {
+            inputError = "The input field can't be emtpy";
+            this.setState({inputError});
+            return false;
+        }
+
+        if (!this.state.input.match(/^[0-9a-zA-Z]+$/)) {
+            inputError = "You can't enter non alphanumeric characters";
+            this.setState({inputError});
+            return false;
+        }
+
+        return true;
+    };
+
     handleSubmit = event => {
         event.preventDefault();
-        this.props.handleFromParent(this.state.input);
+        const isValid = this.handleValidation();
+        if (isValid) {
+            this.props.handleFromParent(this.state.input);
+        }
     };
 
     handleChange = input => {
@@ -23,6 +45,9 @@ class searchForm extends Component {
         return (
             <form onSubmit={this.handleSubmit}>
                 <input type='text' placeholder='Enter City Name...' onKeyDown={this.handleChange}/>
+                <div className="input--error">
+                    {this.state.inputError}
+                </div>
             </form>
         )
     }
