@@ -47,9 +47,6 @@ class App extends Component {
                     );
                 }
             );
-            if (this.state.input != "") {
-                this.setState({location: this.state.input});
-            }
     }
 
     getWeather = (lat, lng) => {
