@@ -6,6 +6,7 @@ import SearchForm from './components/SearchForm';
 import Card from './components/card';
 import MapContainer from './components/MapContainer';
 import axios from "axios";
+import Geocode from "react-geocode";
 
 class App extends Component {
     constructor() {
@@ -16,9 +17,36 @@ class App extends Component {
             temp: "",
             clouds: [],
             input: "",
+            inputSubmit: false,
             userCoordinatesLat: "",
             userCoordinatesLon: "",
+            address: ""
         };
+    }
+
+    componentDidMount(props) {
+            Geocode.setApiKey("AIzaSyDGwf3wXD5z0XqaolwPbRVRKGIkDnK5ql4");
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const {latitude, longitude} = position.coords;
+                    this.getWeather(latitude, longitude);
+
+                    this.setState({
+                        location: {lat: latitude, lng: longitude},
+                    });
+                    // Get reverse geocode to find user address
+                    Geocode.fromLatLng(latitude, longitude).then(
+                        response => {
+                            const address = response.results[0].formatted_address;
+                            this.setState({address: address});
+                            console.log(address);
+                        },
+                        error => {
+                            console.error(error);
+                        }
+                    );
+                }
+            );
     }
 
     getWeather = (lat, lng) => {
@@ -28,54 +56,50 @@ class App extends Component {
                     temp: response.data.list[0].temp.day,
                     weather: response.data,
                 });
-                console.log(response);
             })
-            .catch(error => {
-                console.log('error', error);
-                console.log("Bad")
-;            });
+            .catch(error => console.log('error', error))
+        ;
     };
 
     queryWeather = (coordinates) => {
         this.getWeather(coordinates.lat, coordinates.lng);
     };
 
-    handleData = data => {
-        this.setState({input: data});
-        this.queryWeather(data);
-        console.log("Pasirinkimas", data.lat);
+    handleData = (coordinates, address) => {
         this.setState({
-            userCoordinatesLat: data.lat,
-            userCoordinatesLon: data.lng,
-        })
+            input: coordinates,
+            address: address,
+            inputSubmit: true
+        });
+        this.queryWeather(coordinates);
+        this.setState({location: coordinates})
     };
 
     render() {
         if (this.state.temp === "") {
             return (
-                <div>
+                <div className="container">
                     <Title/>
-                    <SearchForm handleFromParent={this.handleData}/>
-                    <MapContainer
-                    />
+                    <div className='content'>
+                        <SearchForm handleFromParent={this.handleData}/>
+                    </div>
                 </div>
             )
         }
 
         return (
-            <div>
+            <div className="container">
                 <Title/>
                 <div className='content'>
                     <SearchForm handleFromParent={this.handleData}/>
                 </div>
-                {this.state.weather.list.map(day => {
-                    return (<div>{day.temp.day}</div>)
-                })}
+                <Card
+                    location={this.state.address}
+                    weather={this.state.weather}
+                />
                 {console.log("kordinate" + this.state.userCoordinatesLat)}
                 <div className="maps--size">
-                    <MapContainer
-                        lat={this.state.userCoordinatesLat}
-                        lng={this.state.userCoordinatesLon}
+                    <MapContainer location={this.state.location}
                     />
                 </div>
             </div>

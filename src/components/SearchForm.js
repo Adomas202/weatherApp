@@ -14,17 +14,20 @@ class searchForm extends Component {
             inputError: "",
             notFound: "",
             address: "",
+            legitAddress: true,
+            loading: true
         };
     }
 
     handleValidation = () => {
         let inputError = "";
 
-        if (this.state.address.length === 0) {
-            inputError = "The input field can't be emtpy";
-            this.setState({inputError});
-            return false;
-        }
+        if (this.state.legitAddress)
+            if (this.state.address.length === 0) {
+                inputError = "The input field can't be emtpy";
+                this.setState({inputError});
+                return false;
+            }
 
         if (!this.state.address.match(/^[0-9a-zA-Z]+$/)) {
             inputError = "You can't enter non alphanumeric characters";
@@ -40,19 +43,26 @@ class searchForm extends Component {
     };
 
     handleSelect = address => {
-        const isValid = this.handleValidation();
         geocodeByAddress(address)
             .then(results => getLatLng(results[0]))
             .then(latLng => {
                 this.setState({coordinates: latLng});
-                if (isValid) {
-                    this.setState({inputError: ""});
-                    this.props.handleFromParent(latLng);
-                }
+                this.setState({
+                    inputError: "",
+                    address: address,
+                    loading: false,
+                });
+                this.props.handleFromParent(latLng, address);
             })
             .catch(error => {
                 console.error('Error', error);
-                this.setState({notFound: "Didn't find any results"});
+                const valid = this.handleValidation();
+                if (valid) {
+                    this.setState({
+                        notFound: "Didn't find any results",
+                        inputError: "This address does not exist"
+                    });
+                }
             });
     };
 
@@ -102,13 +112,13 @@ class searchForm extends Component {
                             </div>
                         )}
                     </PlacesAutocomplete>
-                    <div className="input--error">
-                        {this.state.inputError}
-                    </div>
-                    <div className="input--error">
-                        {this.state.notFound}
-                    </div>
                 </form>
+                <div className="input--error">
+                    {this.state.inputError}
+                </div>
+                <div className="input--error">
+                    {this.state.notFound}
+                </div>
             </div>
         )
     }

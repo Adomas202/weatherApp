@@ -2,43 +2,17 @@ import React, {Component} from 'react';
 import {GoogleApiWrapper, Map, Marker} from "google-maps-react";
 
 export class MapContainer extends Component {
-    state = {userLocation: {lat: 32, lng: 32}, loading: true};
-
-    componentDidMount(props) {
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                const {latitude, longitude} = position.coords;
-
-                if (this.props.lat === undefined) {
-                    this.setState({
-                        userLocation: {lat: latitude, lng: longitude},
-                        loading: false,
-                    });
-                } else {
-                    this.setState({
-                        userLocation: {lat: this.props.lat, lng: this.props.lng},
-                        loading: false,
-                    })
-                }
-            },
-            () => {
-                this.setState({loading: false});
-            }
-        );
-    }
 
     render() {
-        const {loading, userLocation} = this.state;
-        const {google} = this.props;
-
-        if (loading) {
-            return null;
+        if (this.props.location === undefined) {
+            return <div>Loading...</div>;
         }
+        const {google} = this.props;
 
         return (
             <React.Fragment>
                 <div className="maps--size">
-                    <Map google={google} initialCenter={userLocation} zoom={16}>
+                    <Map google={google} initialCenter={this.props.location} zoom={16}>
                         <Marker
                             title={'Preferred location'}
                         />
@@ -50,5 +24,5 @@ export class MapContainer extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: "AIzaSyDGwf3wXD5z0XqaolwPbRVRKGIkDnK5ql4"
+    apiKey: "AIzaSyBMuGcz5CxAxs3o7zF56CyQX2NcshLMChg"
 })(MapContainer);
