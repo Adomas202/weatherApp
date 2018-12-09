@@ -12,6 +12,7 @@ class searchForm extends Component {
         this.state = {
             input: "",
             inputError: "",
+            notFound: "",
             address: "",
         };
     }
@@ -49,7 +50,10 @@ class searchForm extends Component {
                     this.props.handleFromParent(latLng);
                 }
             })
-            .catch(error => console.error('Error', error));
+            .catch(error => {
+                console.error('Error', error);
+                this.setState({notFound: "Didn't find any results"});
+            });
     };
 
     handleChange = address => {
@@ -100,6 +104,9 @@ class searchForm extends Component {
                     </PlacesAutocomplete>
                     <div className="input--error">
                         {this.state.inputError}
+                    </div>
+                    <div className="input--error">
+                        {this.state.notFound}
                     </div>
                 </form>
             </div>

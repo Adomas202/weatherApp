@@ -28,10 +28,12 @@ class App extends Component {
                     temp: response.data.list[0].temp.day,
                     weather: response.data,
                 });
+                console.log(response);
             })
             .catch(error => {
                 console.log('error', error);
-            });
+                console.log("Bad")
+;            });
     };
 
     queryWeather = (coordinates) => {
