@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import './App.css';
+import './components/styles.scss';
 import Title from './components/title';
 import SearchForm from './components/SearchForm';
 import Card from './components/card';
+import MapContainer from './components/MapContainer';
 import axios from "axios";
 
 class App extends Component {
@@ -14,18 +16,18 @@ class App extends Component {
             temp: "",
             clouds: [],
             input: "",
+            userCoordinatesLat: "",
+            userCoordinatesLon: "",
         };
     }
 
     getWeather = (lat, lng) => {
-        console.log(lat, lng);
         axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 this.setState({
                     temp: response.data.list[0].temp.day,
                     weather: response.data,
                 });
-                console.log(response.data.list);
             })
             .catch(error => {
                 console.log('error', error);
@@ -39,6 +41,11 @@ class App extends Component {
     handleData = data => {
         this.setState({input: data});
         this.queryWeather(data);
+        console.log("Pasirinkimas", data.lat);
+        this.setState({
+            userCoordinatesLat: data.lat,
+            userCoordinatesLon: data.lng,
+        })
     };
 
     render() {
@@ -47,6 +54,8 @@ class App extends Component {
                 <div>
                     <Title/>
                     <SearchForm handleFromParent={this.handleData}/>
+                    <MapContainer
+                    />
                 </div>
             )
         }
@@ -58,15 +67,15 @@ class App extends Component {
                     <SearchForm handleFromParent={this.handleData}/>
                 </div>
                 {this.state.weather.list.map(day => {
-                    return(<div>{day.temp.day}</div>)
+                    return (<div>{day.temp.day}</div>)
                 })}
-                {/*{this.state.weather.list.map(day => {*/}
-                {/*return(*/}
-                {/*<div>*/}
-                {/*{day.temp.day}*/}
-                {/*</div>*/}
-                {/*)*/}
-                {/*})}*/}
+                {console.log("kordinate" + this.state.userCoordinatesLat)}
+                <div className="maps--size">
+                    <MapContainer
+                        lat={this.state.userCoordinatesLat}
+                        lng={this.state.userCoordinatesLon}
+                    />
+                </div>
             </div>
         );
     }
