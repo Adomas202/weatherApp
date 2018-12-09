@@ -47,6 +47,9 @@ class App extends Component {
                     );
                 }
             );
+            if (this.state.input != "") {
+                this.setState({location: this.state.input});
+            }
     }
 
     getWeather = (lat, lng) => {
@@ -88,7 +91,7 @@ class App extends Component {
         }
 
         return (
-            <div className="container">
+            <div>
                 <Title/>
                 <div className='content'>
                     <SearchForm handleFromParent={this.handleData}/>

@@ -20,34 +20,16 @@ const Card = (props) => {
       <li><span className="speed">9<span className="mph">mph</span></span></li>
     </ul>
   </span>
-                {/*{props.weather.map(day => {*/}
-                    {/*return (*/}
-                        {/*<div>{day.temp.day}</div>*/}
-                    {/*)*/}
-                {/*})}*/}
-                {console.log(props.weather)}
-                <div className="forecast clear">
-                    <div className="day tue">TUE
-                        <br/> <span className="cloudy"></span> <br/> <span className="highTemp">79&#176;</span>
-                        <br/> <span
-                            className="lowTemp">57&#176;</span>
-                    </div>
-                    <div className="day wed">WED
-                        <br/> <span className="sunny"></span> <br/> <span className="highTemp">79&#176;</span>
-                        <br/> <span
-                            className="lowTemp">57&#176;</span>
-                    </div>
-                    <div className="day thu">THU
-                        <br/> <span className="sunny"></span> <br/> <span className="highTemp">79&#176;</span>
-                        <br/> <span
-                            className="lowTemp">57&#176;</span>
-                    </div>
-                    <div className="day fri">FRI
-                        <br/> <span className="cloudy"></span> <br/> <span className="highTemp">79&#176;</span>
-                        <br/> <span
-                            className="lowTemp">57&#176;</span>
-                    </div>
-                </div>
+                {props.weather.list.map(day => {
+                    return (
+                        <div className="day tue">TUE
+                            <br/> <span className="cloudy"></span> <br/> <span className="highTemp">{day.temp.max}&#176;</span>
+                            <br/> <span
+                                className="lowTemp">{day.temp.min}&#176;</span>
+                        </div>
+                    )
+                })}
+                {console.log(props.weather.list)}
             </div>
         </div>
     )
