@@ -50,7 +50,7 @@ class App extends Component {
     }
 
     getWeather = (lat, lng) => {
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&cnt=5&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 this.setState({
                     temp: response.data.list[0].temp.day,
@@ -82,6 +82,7 @@ class App extends Component {
                     <Title/>
                     <div className='content'>
                         <SearchForm handleFromParent={this.handleData}/>
+                        Getting current location...
                     </div>
                 </div>
             )
@@ -89,9 +90,11 @@ class App extends Component {
 
         return (
             <div>
-                <Title/>
-                <div className='content'>
-                    <SearchForm handleFromParent={this.handleData}/>
+                <div className="container">
+                    <Title/>
+                    <div className='content'>
+                        <SearchForm handleFromParent={this.handleData}/>
+                    </div>
                 </div>
                 <Card
                     location={this.state.address}

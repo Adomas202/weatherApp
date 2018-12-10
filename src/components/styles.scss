@@ -1,3 +1,13 @@
+.wrapper {
+  margin-right: auto; /* 1 */
+  margin-left:  auto; /* 1 */
+
+  max-width: 960px; /* 2 */
+
+  padding-right: 10px; /* 3 */
+  padding-left:  10px; /* 3 */
+}
+
 .card {
   width:25em;
   min-height:22.5em;
@@ -7,6 +17,7 @@
   padding-top:1em;
   padding-left: 1em;
   padding-right:1em;
+  padding-bottom: 1em;
 }
 
 .location {
@@ -31,8 +42,36 @@
   font-family:Roboto;
   font-weight: 300;
   font-size: 8.5em;
-  margin-top:-.75em;
+  margin-top:-.3em;
   color:#5b5b5b;
+}
+
+.temp-list {
+  margin-top: 4em;
+}
+
+.city {
+  font-family: Roboto;
+  font-weight: 300;
+  font-size: 1.8em;
+  color:#5b5b5b;
+}
+
+.forecast {
+  width:100%;
+  margin:0 auto;
+}
+.day {
+  display:block;
+  width: 21.5%;
+  height:9em;
+  float:left;
+  margin: 0 .375em .5em;
+  text-align:center;
+  font-family:Roboto;
+  color: #5b5b5b;
+  border-right:.1em solid #d9d9d9;
+  line-height: 2;
 }
 
 .container {

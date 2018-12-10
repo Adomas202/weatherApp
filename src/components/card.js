@@ -2,6 +2,7 @@ import React from 'react';
 import './styles.scss';
 
 const Card = (props) => {
+    // noinspection JSAnnotator
     return (
         <div>
             <div className="card">
@@ -13,22 +14,26 @@ const Card = (props) => {
                 </ul>
                 <br/>
                 <div className="sun"></div>
-                <span className="temp">76&#176;</span>
+                <span className="temp">{Math.round(props.weather.list[0].temp.day)}&#176;</span>
                 <span>
     <ul className="variations">
-      <li>CLEAR</li>
+      <li>{props.weather.list[0].weather[0].main}</li>
       <li><span className="speed">9<span className="mph">mph</span></span></li>
     </ul>
   </span>
-                {props.weather.list.map(day => {
-                    return (
-                        <div className="day tue">TUE
-                            <br/> <span className="cloudy"></span> <br/> <span className="highTemp">{day.temp.max}&#176;</span>
-                            <br/> <span
-                                className="lowTemp">{day.temp.min}&#176;</span>
-                        </div>
-                    )
-                })}
+                <div className="temp-list">
+                    {props.weather.list.map((day, index) => {
+                        if (index !== 0)
+                            return (
+                                <div className="day tue">TUE
+                                    <br/> <span className="cloudy"></span> <br/> <span
+                                        className="highTemp">{Math.round(day.temp.max)}&#176;</span>
+                                    <br/> <span
+                                        className="lowTemp">{Math.round(day.temp.min)}&#176;</span>
+                                </div>
+                            )
+                    })}
+                </div>
                 {console.log(props.weather.list)}
             </div>
         </div>
