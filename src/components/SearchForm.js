@@ -83,6 +83,7 @@ class searchForm extends Component {
                             <div>
                                 <input
                                     {...getInputProps({
+                                        type:'text',
                                         placeholder: 'Search for preffered location...',
                                         className: 'location-search-input',
                                     })}

@@ -12,7 +12,12 @@ export class MapContainer extends Component {
         return (
             <React.Fragment>
                 <div className="maps--size">
-                    <Map google={google} center={this.props.location} initialCenter={this.props.location} zoom={16}>
+                    <Map
+                        className="maps--size"
+                        google={google}
+                        center={this.props.location}
+                        initialCenter={this.props.location}
+                        zoom={16}>
                         <Marker
                             title={'Preferred location'}
                         />

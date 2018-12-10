@@ -25,7 +25,7 @@ class App extends Component {
     }
 
     componentDidMount(props) {
-            Geocode.setApiKey("AIzaSyDGwf3wXD5z0XqaolwPbRVRKGIkDnK5ql4");
+            Geocode.setApiKey("AIzaSyBMuGcz5CxAxs3o7zF56CyQX2NcshLMChg");
             navigator.geolocation.getCurrentPosition(
                 position => {
                     const {latitude, longitude} = position.coords;
@@ -35,8 +35,8 @@ class App extends Component {
                         location: {lat: latitude, lng: longitude},
                     });
                     // Get reverse geocode to find user address
-                    Geocode.fromLatLng(latitude, longitude).then(
-                        response => {
+                    Geocode.fromLatLng(latitude, longitude)
+                        .then(response => {
                             const address = response.results[0].formatted_address;
                             this.setState({address: address});
                             console.log(address);
@@ -57,7 +57,7 @@ class App extends Component {
                     weather: response.data,
                 });
             })
-            .catch(error => console.log('error', error))
+            .catch(error => console.log(error))
         ;
     };
 
@@ -100,7 +100,6 @@ class App extends Component {
                     location={this.state.address}
                     weather={this.state.weather}
                 />
-                {console.log("kordinate" + this.state.userCoordinatesLat)}
                 <div className="maps--size">
                     <MapContainer location={this.state.location}
                     />
