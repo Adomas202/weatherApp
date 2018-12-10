@@ -20,33 +20,34 @@ class App extends Component {
             inputSubmit: false,
             userCoordinatesLat: "",
             userCoordinatesLon: "",
-            address: ""
+            address: "",
+            newItem: "",
+            list: []
         };
     }
 
     componentDidMount(props) {
-            Geocode.setApiKey("AIzaSyBMuGcz5CxAxs3o7zF56CyQX2NcshLMChg");
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const {latitude, longitude} = position.coords;
-                    this.getWeather(latitude, longitude);
+        Geocode.setApiKey("AIzaSyBMuGcz5CxAxs3o7zF56CyQX2NcshLMChg");
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const {latitude, longitude} = position.coords;
+                this.getWeather(latitude, longitude);
 
-                    this.setState({
-                        location: {lat: latitude, lng: longitude},
-                    });
-                    // Get reverse geocode to find user address
-                    Geocode.fromLatLng(latitude, longitude)
-                        .then(response => {
+                this.setState({
+                    location: {lat: latitude, lng: longitude},
+                });
+                // Get reverse geocode to find user address
+                Geocode.fromLatLng(latitude, longitude)
+                    .then(response => {
                             const address = response.results[0].formatted_address;
                             this.setState({address: address});
-                            console.log(address);
                         },
                         error => {
                             console.error(error);
                         }
                     );
-                }
-            );
+            }
+        );
     }
 
     getWeather = (lat, lng) => {
@@ -75,12 +76,32 @@ class App extends Component {
         this.setState({location: coordinates})
     };
 
+    addItem() {
+        if (localStorage.getItem('place') == null) {
+            const list = [];
+            list.push(this.state.address);
+            localStorage.setItem('place', JSON.stringify(list));
+        } else {
+            const list = JSON.parse(localStorage.getItem('place'));
+            list.push(this.state.address);
+            localStorage.setItem('place', JSON.stringify(list));
+        }
+        this.setState({list: JSON.parse(localStorage.getItem('place'))});
+    }
+
+    deleteItem(id) {
+        const list = JSON.parse(localStorage.getItem('place'));
+        list.splice(id, 1);
+        localStorage.setItem('place', JSON.stringify(list));
+        this.setState({list: JSON.parse(localStorage.getItem('place'))});
+    }
+
     render() {
         if (this.state.temp === "") {
             return (
-                <div className="container">
+                <div className="wrapper container">
                     <Title/>
-                    <div className='content'>
+                    <div className="content">
                         <SearchForm handleFromParent={this.handleData}/>
                         Getting current location...
                     </div>
@@ -90,16 +111,29 @@ class App extends Component {
 
         return (
             <div>
-                <div className="container">
+                <div className="wrapper container">
                     <Title/>
-                    <div className='content'>
+                    <div className="content">
                         <SearchForm handleFromParent={this.handleData}/>
+                        <button onClick={() => this.addItem()}>
+                            Add location to Favourites list
+                        </button>
                     </div>
                 </div>
                 <Card
                     location={this.state.address}
                     weather={this.state.weather}
                 />
+                {this.state.list.map((item, index) => {
+                    return (
+                        <li key={index}>
+                            {item}
+                            <button onClick={() => this.deleteItem(index)}>
+                                Remove
+                            </button>
+                        </li>
+                    );
+                })}
                 <div className="maps--size">
                     <MapContainer location={this.state.location}
                     />

@@ -73,6 +73,7 @@ class searchForm extends Component {
     render() {
         return (
             <div>
+                Search for preffered location
                 <form onSubmit={this.handleSubmit}>
                     <PlacesAutocomplete
                         value={this.state.address}
