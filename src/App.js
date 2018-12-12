@@ -106,7 +106,7 @@ class App extends Component {
                 </div>
             )
         }
-        let showFavouriteList = this.state.favouritesList.length === 0 ? false : true;
+        let showFavouriteList = this.state.favouritesList === null ? false : true;
         debugger;
 
         return (
