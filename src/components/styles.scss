@@ -25,15 +25,13 @@
   background: #fff;
   margin: 2em auto;
   border-radius: .2em;
-  padding-top: 1em;
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-bottom: 1em;
+  padding: 1em;
   list-style-type: none;
 
   button {
     margin-left: 30px;
     border-radius: 30%;
+    align-self: center;
   }
 }
 
@@ -48,6 +46,7 @@
 
 .card-li {
   margin-top: 5px;
+  display: flex;
 }
 
 .location {
@@ -129,7 +128,9 @@
 }
 
 .input--error {
-  color: red;
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
 }
 
 .maps--size {

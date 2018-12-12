@@ -14,7 +14,8 @@ class searchForm extends Component {
             inputError: "",
             address: "",
             legitAddress: true,
-            loading: true
+            loading: true,
+            showError: false
         };
     }
 
@@ -24,13 +25,19 @@ class searchForm extends Component {
         if (this.state.legitAddress)
             if (this.state.address.length === 0) {
                 inputError = "The input field can't be emtpy";
-                this.setState({inputError});
+                this.setState({
+                    inputError,
+                    showError: true
+                });
                 return false;
             }
 
         if (!this.state.address.match(/^[0-9a-zA-Z]+$/)) {
             inputError = "You can't enter non alphanumeric characters";
-            this.setState({inputError});
+            this.setState({
+                inputError,
+                showError: true
+            });
             return false;
         }
 
@@ -63,7 +70,10 @@ class searchForm extends Component {
     };
 
     handleChange = address => {
-        this.setState({address})
+        this.setState({address});
+        if (address.length === 0) {
+            this.setState({showError: false});
+        }
     };
 
     render() {
@@ -80,7 +90,7 @@ class searchForm extends Component {
                             <div>
                                 <input
                                     {...getInputProps({
-                                        type:'text',
+                                        type: 'text',
                                         placeholder: 'Search for preffered location...',
                                         className: 'location-search-input',
                                     })}
@@ -110,9 +120,11 @@ class searchForm extends Component {
                         )}
                     </PlacesAutocomplete>
                 </form>
-                <div className="input--error">
-                    {this.state.inputError}
-                </div>
+                {this.state.showError ? (
+                    <div className="input--error">
+                        {this.state.inputError}
+                    </div>
+                ) : null}
             </div>
         )
     }
