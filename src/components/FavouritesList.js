@@ -9,21 +9,8 @@ class FavouritesList extends Component {
         };
     }
 
-    componentDidUpdate() {
-        // this.setState({list: JSON.parse(localStorage.getItem('place'))})
-    }
-
-    deleteItem(id) {
-        alert(id);
-        const list = JSON.parse(localStorage.getItem('place'));
-        list.splice(id, 1);
-        console.log(list);
-        const listItems = localStorage.setItem('place', JSON.stringify(list));
-        this.setState({list: listItems, getFromState: true});
-    }
-
     render() {
-        if (this.state.getFromState == false) {
+        if (this.state.getFromState === false) {
             return (
                 <div>
                     <ul>

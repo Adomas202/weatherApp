@@ -1,81 +1,131 @@
 .wrapper {
-  margin-right: auto; /* 1 */
-  margin-left:  auto; /* 1 */
+  margin-right: auto;
+  margin-left: auto;
 
-  max-width: 960px; /* 2 */
+  max-width: 960px;
 
-  padding-right: 10px; /* 3 */
-  padding-left:  10px; /* 3 */
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: center;
+
+  button {
+    padding: 6px 4px;
+    transition: 300ms;
+  }
+
+  button:hover {
+    background-color: #e1e1e1;
+    transition: 300ms;
+  }
 }
 
 .card {
-  width:25em;
-  min-height:22.5em;
+  width: 25em;
+  min-height: 22.5em;
   background: #fff;
-  margin:2em auto;
+  margin: 2em auto;
   border-radius: .2em;
-  padding-top:1em;
+  padding-top: 1em;
   padding-left: 1em;
-  padding-right:1em;
+  padding-right: 1em;
   padding-bottom: 1em;
+  list-style-type: none;
+
+  button {
+    margin-left: 30px;
+    border-radius: 30%;
+  }
+}
+
+.card-favourites {
+  min-height: 0;
+
+  div {
+    text-align: center;
+    font-size: 1.2em;
+  }
+}
+
+.card-li {
+  margin-top: 5px;
 }
 
 .location {
   font-family: Roboto;
   font-weight: 300;
   font-size: 1.8em;
-  color:#5b5b5b;
+  color: #5b5b5b;
 }
 
 .menu {
   float: right;
   font-family: Roboto;
-  font-size:.5em;
-  color:#5b5b5b;
-  margin-top:-.09em;
-  margin-right:-2em;
-  list-style:square;
+  font-size: .5em;
+  color: #5b5b5b;
+  margin-top: -.09em;
+  margin-right: -2em;
+  list-style: square;
 }
 
 .temp {
-  float:right;
-  font-family:Roboto;
+  float: right;
+  font-family: Roboto;
   font-weight: 300;
   font-size: 8.5em;
-  margin-top:-.3em;
-  color:#5b5b5b;
+  margin-top: -.75em;
+  color: #5b5b5b;
 }
 
 .temp-list {
-  margin-top: 4em;
+  margin-top: 1em;
 }
 
 .city {
   font-family: Roboto;
   font-weight: 300;
   font-size: 1.8em;
-  color:#5b5b5b;
+  color: #5b5b5b;
+}
+
+.weather {
+  width: 4em;
+  height: 4em;
+  margin-top: 1em;
+
+  img {
+    width: 70px;
+  }
 }
 
 .forecast {
-  width:100%;
-  margin:0 auto;
+  width: 100%;
+  margin: 0 auto;
 }
+
 .day {
-  display:block;
-  width: 21.5%;
-  height:9em;
-  float:left;
+  display: block;
+  width: 16%;
+  height: 7em;
+  float: left;
   margin: 0 .375em .5em;
-  text-align:center;
-  font-family:Roboto;
+  text-align: center;
+  font-family: Roboto;
   color: #5b5b5b;
-  border-right:.1em solid #d9d9d9;
+  border-right: .1em solid #d9d9d9;
   line-height: 2;
 }
 
-.container {
-  text-align: center;
+.variations {
+  font-family: Roboto;
+  font-wight: 300;
+  color: #8c8c8c;
+  list-style: none;
+  margin-left: -2em;
+  padding-top: -16px;
+}
+
+.kmh {
+  font-size: .8em;
 }
 
 .input--error {

@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
+import MapApiKey from './MapApiKey';
 import './components/styles.scss';
 import Title from './components/title';
 import SearchForm from './components/SearchForm';
 import Card from './components/card';
 import MapContainer from './components/MapContainer';
+import ListItem from './components/listItem';
 import axios from "axios";
 import Geocode from "react-geocode";
 
@@ -14,20 +16,17 @@ class App extends Component {
         this.handleData = this.handleData.bind(this);
         this.state = {
             weather: {},
-            temp: "",
-            clouds: [],
             input: "",
             inputSubmit: false,
-            userCoordinatesLat: "",
-            userCoordinatesLon: "",
             address: "",
             newItem: "",
-            list: []
+            list: [],
+            favouritesList: JSON.parse(localStorage.getItem('place')),
         };
     }
 
-    componentDidMount(props) {
-        Geocode.setApiKey("AIzaSyBMuGcz5CxAxs3o7zF56CyQX2NcshLMChg");
+    componentDidMount() {
+        Geocode.setApiKey(MapApiKey);
         navigator.geolocation.getCurrentPosition(
             position => {
                 const {latitude, longitude} = position.coords;
@@ -50,11 +49,30 @@ class App extends Component {
         );
     }
 
+    addItem() {
+        if (localStorage.getItem('place') == null) {
+            const list = [];
+            list.push(this.state.address);
+            localStorage.setItem('place', JSON.stringify(list));
+        } else {
+            const list = JSON.parse(localStorage.getItem('place'));
+            list.push(this.state.address);
+            localStorage.setItem('place', JSON.stringify(list));
+        }
+        this.setState({favouritesList: JSON.parse(localStorage.getItem('place'))});
+    }
+
+    deleteItem(id) {
+        const list = JSON.parse(localStorage.getItem('place'));
+        list.splice(id, 1);
+        localStorage.setItem('place', JSON.stringify(list));
+        this.setState({favouritesList: JSON.parse(localStorage.getItem('place'))});
+    }
+
     getWeather = (lat, lng) => {
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&cnt=5&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lng}&cnt=6&units=metric&appid=f92c1f4990b0574d4a4e4d3dd556f388`)
             .then(response => {
                 this.setState({
-                    temp: response.data.list[0].temp.day,
                     weather: response.data,
                 });
             })
@@ -76,64 +94,52 @@ class App extends Component {
         this.setState({location: coordinates})
     };
 
-    addItem() {
-        if (localStorage.getItem('place') == null) {
-            const list = [];
-            list.push(this.state.address);
-            localStorage.setItem('place', JSON.stringify(list));
-        } else {
-            const list = JSON.parse(localStorage.getItem('place'));
-            list.push(this.state.address);
-            localStorage.setItem('place', JSON.stringify(list));
-        }
-        this.setState({list: JSON.parse(localStorage.getItem('place'))});
-    }
-
-    deleteItem(id) {
-        const list = JSON.parse(localStorage.getItem('place'));
-        list.splice(id, 1);
-        localStorage.setItem('place', JSON.stringify(list));
-        this.setState({list: JSON.parse(localStorage.getItem('place'))});
-    }
-
     render() {
-        if (this.state.temp === "") {
+        if (this.state.weather.list === undefined) {
             return (
-                <div className="wrapper container">
+                <div className="wrapper">
                     <Title/>
-                    <div className="content">
+                    <div className="container">
                         <SearchForm handleFromParent={this.handleData}/>
                         Getting current location...
                     </div>
                 </div>
             )
         }
+        let showFavouriteList = this.state.favouritesList.length === 0 ? false : true;
+        debugger;
 
         return (
             <div>
                 <div className="wrapper container">
                     <Title/>
-                    <div className="content">
-                        <SearchForm handleFromParent={this.handleData}/>
-                        <button onClick={() => this.addItem()}>
-                            Add location to Favourites list
-                        </button>
-                    </div>
+                    <SearchForm handleFromParent={this.handleData}/>
+                    <button onClick={() => this.addItem()}>
+                        Add location to Favourites list
+                    </button>
                 </div>
-                <Card
-                    location={this.state.address}
-                    weather={this.state.weather}
-                />
-                {this.state.list.map((item, index) => {
-                    return (
-                        <li key={index}>
-                            {item}
-                            <button onClick={() => this.deleteItem(index)}>
-                                Remove
-                            </button>
-                        </li>
-                    );
-                })}
+                <div className="row">
+                    <Card
+                        location={this.state.address}
+                        weather={this.state.weather}
+                    />
+                    {showFavouriteList ? (
+                        <div className="card card-favourites">
+                            <div>Your favourite locations list</div>
+                            {this.state.favouritesList.map((item, index) => {
+                                return (
+                                    <li className="card-li"
+                                        key={index}>
+                                        <ListItem item={item}/>
+                                        <button onClick={() => this.deleteItem(index)}>
+                                            X
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </div>
+                    ) : null}
+                </div>
                 <div className="maps--size">
                     <MapContainer location={this.state.location}
                     />

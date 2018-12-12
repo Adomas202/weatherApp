@@ -12,7 +12,6 @@ class searchForm extends Component {
         this.state = {
             input: "",
             inputError: "",
-            notFound: "",
             address: "",
             legitAddress: true,
             loading: true
@@ -58,10 +57,7 @@ class searchForm extends Component {
                 console.error('Error', error);
                 const valid = this.handleValidation();
                 if (valid) {
-                    this.setState({
-                        notFound: "Didn't find any results",
-                        inputError: "This address does not exist"
-                    });
+                    alert("Address not found!");
                 }
             });
     };
@@ -73,7 +69,7 @@ class searchForm extends Component {
     render() {
         return (
             <div>
-                Search for preffered location
+                Search for preferred location
                 <form onSubmit={this.handleSubmit}>
                     <PlacesAutocomplete
                         value={this.state.address}
@@ -95,7 +91,6 @@ class searchForm extends Component {
                                         const className = suggestion.active
                                             ? 'suggestion-item--active'
                                             : 'suggestion-item';
-                                        // inline style for demonstration purpose
                                         const style = suggestion.active
                                             ? {backgroundColor: '#fafafa', cursor: 'pointer'}
                                             : {backgroundColor: '#ffffff', cursor: 'pointer'};
@@ -117,9 +112,6 @@ class searchForm extends Component {
                 </form>
                 <div className="input--error">
                     {this.state.inputError}
-                </div>
-                <div className="input--error">
-                    {this.state.notFound}
                 </div>
             </div>
         )
